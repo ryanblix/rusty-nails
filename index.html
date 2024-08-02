@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Improv Prompt Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Fira Sans Extra Condensed', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fbebcb;
+        }
+        .container {
+            text-align: center;
+        }
+        .prompt-box {
+            width: 80vw;
+            height: 45vw; /* 16:9 ratio */
+            background-color: white;
+            border: 4px solid black; /* Thicker border */
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            overflow: hidden;
+            padding: 20px; /* More padding */
+        }
+        #prompt-text {
+            font-size: 1vw; /* Start with a small font size */
+            margin: 0;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            word-wrap: break-word;
+            text-transform: uppercase; /* All caps */
+        }
+        #generate-btn {
+            font-family: 'Fira Sans Extra Condensed', sans-serif;
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #23cbab;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="prompt-box">
+            <p id="prompt-text">Click the button to generate a prompt!</p>
+        </div>
+        <button id="generate-btn">Generate Prompt</button>
+    </div>
+    <script>
+        const prompts = [
+            "A pair of shy introverts flirts using only interpretive dance",
+            "Astronauts discover their spacesuits are oddly arousing",
+            "A couple of mimes acts out their entire relationship without speaking",
+            "Germaphobes attempt to have a steamy encounter in a hazmat suit",
+            "Food critics seduce each other with increasingly vivid descriptions",
+            "A group of librarians starts a whisper-only book club about erotica",
+            "Magicians try to make sparks fly on a first date",
+            "Clowns attend couple's therapy to work on their honking issues",
+            "Contortionists get tangled up during an intimate moment",
+            "A group of superheroes reveals their secret identities and insecurities",
+            "Yogis use increasingly complex poses to express their feelings",
+            "Opera singers communicate their desires through arias alone",
+            "A speed dating event where participants can only use puns",
+            "Mimes trapped in an invisible box try to hook up",
+            "Chefs engage in a flirtatious food-tasting session",
+            "A group of method actors can't break character during an orgy",
+            "Ballroom dancers navigate a poly relationship through dance",
+            "Poets have a passionate slam poetry battle about their love",
+            "Sword swallowers attempt to give each other compliments",
+            "A group of archaeologists unearths their repressed desires",
+            "Crime scene investigators flirt while analyzing evidence",
+            "Composers try to seduce each other using only musical notes",
+            "A group of mathematicians expresses love through complex equations",
+            "Sculptors mold their perfect partner out of clay",
+            "Circus performers navigate a love triangle on the trapeze",
+            "Wine tasters describe their attraction using only tasting notes",
+            "A group of historians reenacts famous love scenes from different eras",
+            "Paleontologists discover they have chemistry while digging for bones",
+            "Competitive eaters try to have a romantic dinner date",
+            "A group of spies attempts to maintain cover during speed dating",
+            "Chess players use chess moves to express their feelings",
+            "Shakespearean actors can only communicate using famous love quotes",
+            "A group of mimes acts out a soap opera love triangle",
+            "Bakers try to win each other's hearts with increasingly elaborate cakes",
+            "Weightlifters attempt a delicate first date",
+            "A group of time travelers from different eras navigates modern dating",
+            "Ventriloquists express their feelings through their puppets",
+            "Gourmands try to feed each other romantically",
+            "A group of ninjas attempts to sneak into each other's hearts",
+            "Meteorologists forecast their budding romance",
+            "Gymnasts perform increasingly difficult routines to impress each other",
+            "A group of philosophers debates the nature of love while speed dating",
+            "Ice sculptors carve their perfect partner out of ice",
+            "Whistlers serenade each other with increasingly complex tunes",
+            "A group of mimes acts out a romantic comedy without speaking",
+            "Jugglers try to keep their relationship and balls in the air",
+            "Speed-talkers try to have a heartfelt conversation",
+            "A group of contortionists attempts group therapy in increasingly twisted positions",
+            "Fire-eaters try to kindle a romance",
+            "Plate-spinners balance their love life and career",
+            "A group of medieval re-enactors navigate modern dating apps",
+            "Escape artists try to break free from their emotional baggage",
+            "Yodelers express their love from mountaintops",
+            "A group of silent film actors creates a modern rom-com without sound",
+            "Sword swallowers attempt to give each other butterfly kisses",
+            "Parkour athletes navigate the obstacles of love",
+            "A group of psychics tries to read each other's true feelings",
+            "Origami artists fold increasingly complex love notes",
+            "Bubble blowers try to capture their emotions in soap",
+            "A group of astronauts navigates long-distance relationships from space",
+            "Contortionists attempt to untangle their complicated feelings",
+            "Hot dog eating champions try to have a Lady and the Tramp moment",
+            "A group of mathematicians calculates the probability of true love",
+            "Mime troupes act out a West Side Story-esque forbidden romance",
+            "Jump ropers skip to the rhythm of their hearts",
+            "A group of archaeologists unearths ancient love potions and tests them",
+            "Yoga instructors attempt partner poses with increasing difficulty",
+            "Plate spinners try to keep multiple relationships going",
+            "A group of time travelers attempts to change their romantic past",
+            "Ventriloquists have their dummies express their true feelings",
+            "Speed readers try to get through a steamy novel together",
+            "A group of alchemists concocts love potions with unexpected results",
+            "Fencers duel for each other's hearts",
+            "Memory champions try to remember all their past lovers",
+            "A group of circus performers creates a big top love story",
+            "Quick-change artists reveal new aspects of themselves on each date",
+            "Strongmen attempt to lift each other's spirits",
+            "A group of cryptographers decodes each other's love letters",
+            "Escape room designers create increasingly complex relationship scenarios",
+            "Speed stackers build a relationship one cup at a time",
+            "A group of historians debates the greatest love stories of all time",
+            "Beatboxers attempt to create the perfect mood music",
+            "Puzzle solvers try to piece together their complicated feelings",
+            "A group of storm chasers pursues the perfect whirlwind romance",
+            "Limbo dancers try to overcome their relationship hurdles",
+            "Professional laughers attempt to stifle their giggles during intimate moments",
+            "A group of tailors measures each other up for the perfect fit",
+            "Knife throwers cautiously open up to each other",
+            "Speed painters create portraits of their ideal partners",
+            "A group of opera singers performs an improvised love story",
+            "Tightrope walkers balance their desire for intimacy and independence",
+            "Arm wrestlers engage in a battle of emotional strength",
+            "A group of botanists cultivates the garden of their relationship",
+            "Rock climbers scale the cliffs of commitment together",
+            "Sommeliers pair wines with each stage of their relationship",
+            "A group of architects designs their dream home and future together",
+            "Professional cuddlers compete to give the most comforting embrace",
+            "Synchronized swimmers choreograph their love story in the pool",
+            "A group of chefs creates a multi-course meal representing their relationship",
+            "Acrobats perform increasingly daring stunts to show their trust in each other"
+        ];
+
+        const promptText = document.getElementById('prompt-text');
+        const generateBtn = document.getElementById('generate-btn');
+
+        function resizeText() {
+            const promptBox = document.querySelector('.prompt-box');
+            
+            let fontSize = 1;
+            promptText.style.fontSize = `${fontSize}px`;
+
+            while (promptText.scrollHeight <= promptBox.clientHeight - 20 && promptText.scrollWidth <= promptBox.clientWidth - 20) {
+                fontSize++;
+                promptText.style.fontSize = `${fontSize}px`;
+            }
+
+            // Back off a bit to ensure it fits
+            fontSize -= 2;
+            promptText.style.fontSize = `${fontSize}px`;
+        }
+		
+
+        function generatePrompt(){
+            const randomIndex = Math.floor(Math.random() * prompts.length);
+            promptText.textContent = prompts[randomIndex];
+            resizeText();
+        }
+
+        generateBtn.addEventListener('click', generatePrompt);
+    </script>
+</body>
+</html>
